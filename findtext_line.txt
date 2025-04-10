@@ -1,0 +1,18 @@
+ #!/bin/csh
+     2  # Script to find text in a file
+     3  echo "Written by RamyaSree Vanamamulai"
+     4
+     5  if ($#argv != 2) then
+     6      echo "Usage: findtext.sh search_string filename"
+     7      exit 1
+     8  endif
+     9
+    10  set string="$argv[1]"
+    11  set file="$argv[2]"
+    12
+    13  if (-f "$file") then
+    14      echo "$file"
+    15      grep -n "$string" "$file" | sed 's/:/. /'
+    16  else
+    17      echo "File $file not found"
+    18  endif
