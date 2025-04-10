@@ -1,0 +1,26 @@
+1  #!/bin/csh
+     2  # Script to check if three numbers form a right triangle
+     3  echo "Written by your name"
+     4
+     5  # Check for correct number of arguments
+     6  if ($#argv != 3) then
+     7      echo "Usage: right.sh a b c"
+     8      exit 1
+     9  endif
+    10
+    11  # Calculate squares
+    12  @ a = $argv[1] * $argv[1]
+    13  @ b = $argv[2] * $argv[2]
+    14  @ c = $argv[3] * $argv[3]
+    15
+    16  # Print the numbers without newline
+    17  echo -n "$argv[1] $argv[2] $argv[3] "
+    18
+    19  # Check if it's a right triangle using Pythagorean theorem
+    20  if (($a + $b == $c) || ($b + $c == $a) || ($a + $c == $b)) then
+    21      echo "is a right triangle"
+    22      exit 0
+    23  else
+    24  echo "is not a right triangle"
+    25
+    26  endif
