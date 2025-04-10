@@ -1,0 +1,19 @@
+#!/bin/csh
+     2  # Script to count characters, words, and lines in files
+     3  echo "Written by your name"
+     4
+     5  if ($#argv < 1) then
+     6      echo "Usage: count.s filename(s)"
+     7      exit 1
+     8  endif
+     9
+    10  foreach file ($argv)
+    11      if (-f "$file") then
+    12          echo "$file"
+    13          wc -c "$file" | awk '{print $1" characters"}'
+    14          wc -w "$file" | awk '{print $1" words"}'
+    15          wc -l "$file" | awk '{print $1" lines"}'
+    16      else
+    17          echo "File $file not found"
+    18      endif
+    19  end
