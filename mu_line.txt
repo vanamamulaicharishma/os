@@ -1,0 +1,96 @@
+ 1  #!/bin/sh
+     2  # Multifunction Utility Script
+     3  # Author: your name
+     4
+     5  echo "Written by your name"
+     6
+     7  # Function to display usage
+     8  usage() {
+     9      echo "Usage: $0 [-f searchstr file] [-r n1 n2 n3] [-c file1 [file2 ...]]"
+    10      exit 1
+    11  }
+    12
+    13  # Function to check if a string is a valid number
+    14  is_number() {
+    15      case $1 in
+    16          ''|*[!0-9-]*) return 1 ;;
+    17          *) return 0 ;;
+    18      esac
+    19  }
+    20
+    21  # Check if we have arguments
+    22  if [ $# -eq 0 ]; then
+    23      usage
+    24  fi
+    25
+    26  # Process arguments
+    27  while [ $# -gt 0 ]; do
+    28      case "$1" in
+    29          -f)
+    30              # Check if we have enough arguments for -f
+    31              if [ $# -lt 3 ]; then
+    32                  echo "Error: -f requires searchstring and filename"
+    33                  shift
+    34                  continue
+    35              fi
+    36              # Call findtext.sh with arguments
+    37              ./findtext.sh "$2" "$3"
+    38              shift 3
+    39              ;;
+    40
+    41          -r)
+    42              # Check if we have enough arguments for -r
+    43              if [ $# -lt 4 ]; then
+    44                  echo "Error: -r requires three numbers"
+    45                  shift
+    46                  continue
+    47              fi
+    48              # Validate numbers
+    49              for num in "$2" "$3" "$4"; do
+    50                  if ! is_number "$num"; then
+    51                      echo "Error: Invalid number '$num'"
+    52                      shift 4
+    53                      continue 2
+    54                  fi
+    55              done
+    56              # Call right.sh with arguments
+    57              ./right.sh "$2" "$3" "$4"
+    58              shift 4
+    59              ;;
+    60
+    61          -c)
+    62              # Check if we have at least one file argument
+    63              if [ $# -lt 2 ]; then
+    64                  echo "Error: -c requires at least one filename"
+    65                  shift
+    66                  continue
+    67              fi
+    68              shift
+    69              # Process all files until next option or end
+    70              while [ $# -gt 0 ] && ! echo "$1" | grep -q "^-"; do
+    71                  ./count.sh "$1"
+    72                  shift
+    73              done
+    74              ;;
+    75
+    76          -*)
+    77              # Handle invalid options
+    78              echo -n "Error: Invalid option '$1'"
+    79              shift
+    80              # Print all parameters until next option
+    81              while [ $# -gt 0 ] && ! echo "$1" | grep -q "^-"; do
+    82                  echo -n " $1"
+    83                  shift
+    84              done
+    85              echo
+    86              ;;
+    87
+    88          *)
+    89              # Handle unexpected arguments
+    90              echo "Error: Expected option starting with '-', got '$1'"
+    91              shift
+    92              ;;
+    93      esac
+    94  done
+    95
+    96  exit 0
